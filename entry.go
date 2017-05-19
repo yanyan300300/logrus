@@ -96,6 +96,7 @@ func (entry Entry) log(level Level, msg string) {
 	if err := entry.Logger.Hooks.Fire(level, &entry); err != nil {
 		entry.Logger.mu.Lock()
 		fmt.Fprintf(os.Stderr, "Failed to fire hook: %v\n", err)
+		fmt.Fprintf(os.Stderr, "entry %+v\n", entry)
 		entry.Logger.mu.Unlock()
 	}
 	buffer = bufferPool.Get().(*bytes.Buffer)
@@ -107,6 +108,7 @@ func (entry Entry) log(level Level, msg string) {
 	if err != nil {
 		entry.Logger.mu.Lock()
 		fmt.Fprintf(os.Stderr, "Failed to obtain reader, %v\n", err)
+		fmt.Fprintf(os.Stderr, "entry %+v\n", entry)
 		entry.Logger.mu.Unlock()
 	} else {
 		entry.Logger.mu.Lock()
